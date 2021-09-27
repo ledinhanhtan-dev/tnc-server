@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
-import { CommonModule } from './common/common.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configValidationSchema } from './config/config.schema';
 import { ProductsModule } from './products/products.module';
+import { CommonModule } from './common/common.module';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
