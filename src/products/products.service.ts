@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { stringHelper } from 'src/helpers/stringHelper.helper';
 import { Repository } from 'typeorm';
@@ -20,6 +20,14 @@ export class ProductsService {
   async getHomeProducts(): Promise<HomeProducts> {
     const products = await this.productsRepository.find();
     return { isFetched: true, discountProducts: products };
+  }
+
+  async getProductByIdName(idName: string): Promise<Product> {
+    const product = await this.productsRepository.findOne({ idName });
+
+    if (!product) throw new NotFoundException();
+
+    return product;
   }
 
   async createProduct(createProductDto: CreateProductDto): Promise<Product> {
