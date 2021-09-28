@@ -1,9 +1,11 @@
 import {
+  ArrayMinSize,
+  IsArray,
+  IsBoolean,
   IsNotEmpty,
   IsNumber,
   IsPositive,
   IsString,
-  IsUrl,
   Max,
   Min,
 } from 'class-validator';
@@ -17,11 +19,15 @@ export class CreateProductDto {
   price: number;
 
   @IsPositive()
-  oldPrice: number;
+  priceOld: number;
 
   @IsNotEmpty()
   @IsString()
   thumbnail: string;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  images: string[];
 
   @IsNotEmpty()
   @IsString()
@@ -31,4 +37,17 @@ export class CreateProductDto {
   @Min(0)
   @Max(5)
   rating: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
+  guarantee: number;
+
+  @IsNotEmpty()
+  @IsArray()
+  shortDescriptions: string[];
+
+  @IsNotEmpty()
+  @IsBoolean()
+  available: boolean = true;
 }
