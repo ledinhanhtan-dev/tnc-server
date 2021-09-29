@@ -2,6 +2,7 @@ import {
   ArrayMinSize,
   IsArray,
   IsBoolean,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsPositive,
@@ -18,7 +19,8 @@ export class CreateProductDto {
   @IsPositive()
   price: number;
 
-  @IsPositive()
+  @IsNumber()
+  @Min(0)
   priceOld: number;
 
   @IsNotEmpty()
@@ -40,6 +42,7 @@ export class CreateProductDto {
 
   @IsNumber()
   @Min(0)
+  @IsInt()
   ratingCount: number;
 
   @IsNotEmpty()

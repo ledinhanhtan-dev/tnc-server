@@ -1,0 +1,24 @@
+{
+  "name": "Card Màn Hình MSI GeForce RTX 3060 Ti VENTUS 2X OCV1 8GB",
+  "price": 20900000,
+  "priceOld": 21290000,
+  "thumbnail": "http://localhost:3000/image/product/vga/msi/card-man-hinh-msi-geforce-rtx-3060-ti-ventus-2x-ocv1-1-228x228.jpg",
+  "images": [
+    "http://localhost:3000/image/product/vga/msi/card-man-hinh-msi-geforce-rtx-3060-ti-ventus-2x-ocv1-1-500x500.jpg",
+    "http://localhost:3000/image/product/vga/msi/card-man-hinh-msi-geforce-rtx-3060-ti-ventus-2x-ocv1-2-500x500.jpg",
+    "http://localhost:3000/image/product/vga/msi/card-man-hinh-msi-geforce-rtx-3060-ti-ventus-2x-ocv1-3-500x500.jpg",
+    "http://localhost:3000/image/product/vga/msi/card-man-hinh-msi-geforce-rtx-3060-ti-ventus-2x-ocv1-4-500x500.jpg",
+    "http://localhost:3000/image/product/vga/msi/card-man-hinh-msi-geforce-rtx-3060-ti-ventus-2x-ocv1-5-500x500.jpg"
+  ],
+  "link": "http://localhost:3000/image/product/card-man-hinh-asus-dual-geforce-rtx3060-ti-v2-edition-1-228x228.jpg",
+  "ratingScore": 0,
+  "ratingCount": 24,
+  "guarantee": 36,
+  "shortDescriptions": [
+    "Dung lượng bộ nhớ: 8GB GDDR6",
+    "Băng thông: 256-bit",
+    "Kết nối: DisplayPort x 3 (v1.4a) / HDMI 2.1 x 1",
+    "Nguồn yêu cầu: 650W"
+  ],
+  "available": true
+}

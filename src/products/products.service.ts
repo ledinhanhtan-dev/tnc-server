@@ -1,10 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { stringHelper } from 'src/helpers/stringHelper.helper';
-import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
-import { Product } from './entities/product.entity';
 import { HomeProducts } from './interfaces/home-products';
+import { Product } from './entities/product.entity';
+import { Repository } from 'typeorm';
+import { PRODUCT_CARD_PROPERTIES } from './constants';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -18,15 +20,19 @@ export class ProductsService {
   }
 
   async getHomeProducts(): Promise<HomeProducts> {
-    const products = await this.productsRepository.find();
-    return { discountProducts: products, newProducts: [], hotProducts: [] };
+    const discountProducts = await this.productsRepository
+      .createQueryBuilder('product')
+      .select(PRODUCT_CARD_PROPERTIES)
+      .limit(10)
+      .getMany();
+
+    // const products = await this.productsRepository.find();
+    return { discountProducts, newProducts: [], hotProducts: [] };
   }
 
-  async getProductByIdName(idName: string): Promise<Product> {
+  async getProduct(idName: string): Promise<Product> {
     const product = await this.productsRepository.findOne({ idName });
-
     if (!product) throw new NotFoundException();
-
     return product;
   }
 
@@ -37,5 +43,10 @@ export class ProductsService {
     });
 
     return this.productsRepository.save(newProduct);
+  }
+
+  async updateProduct(idName: string, updateProductDto: UpdateProductDto) {
+    const product = await this.getProduct(idName);
+    return this.productsRepository.save({ ...product, ...updateProductDto });
   }
 }
