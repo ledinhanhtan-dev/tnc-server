@@ -19,7 +19,7 @@ export class ProductsService {
 
   async getHomeProducts(): Promise<HomeProducts> {
     const products = await this.productsRepository.find();
-    return { isFetched: true, discountProducts: products };
+    return { discountProducts: products, newProducts: [], hotProducts: [] };
   }
 
   async getProductByIdName(idName: string): Promise<Product> {

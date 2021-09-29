@@ -27,10 +27,11 @@ export class Product {
   @Column()
   link: string;
 
-  // @Column()
-  // available: boolean;
   @Column()
-  rating: number;
+  ratingScore: number;
+
+  @Column()
+  ratingCount: number;
 
   @Column()
   guarantee: number;
