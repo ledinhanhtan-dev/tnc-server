@@ -18,9 +18,9 @@ export class ProductsController {
     return this.productsService.getHomeProducts();
   }
 
-  @Get(':idName')
-  getProduct(@Param('idName') idName: string): Promise<Product> {
-    return this.productsService.getProduct(idName);
+  @Get(':id')
+  getProduct(@Param('id') id: string): Promise<Product> {
+    return this.productsService.getProduct(id);
   }
 
   @Post('create')
@@ -28,11 +28,11 @@ export class ProductsController {
     return this.productsService.createProduct(createProductDto);
   }
 
-  @Patch(':idName/edit')
+  @Patch(':id/edit')
   updateProduct(
-    @Param('idName') idName: string,
+    @Param('id') id: string,
     @Body() updateDto: UpdateProductDto,
   ): Promise<Product> {
-    return this.productsService.updateProduct(idName, updateDto);
+    return this.productsService.updateProduct(id, updateDto);
   }
 }

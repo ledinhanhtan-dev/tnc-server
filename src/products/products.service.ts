@@ -30,8 +30,8 @@ export class ProductsService {
     return { discountProducts, newProducts: [], hotProducts: [] };
   }
 
-  async getProduct(idName: string): Promise<Product> {
-    const product = await this.productsRepository.findOne({ idName });
+  async getProduct(id: string): Promise<Product> {
+    const product = await this.productsRepository.findOne({ id });
     if (!product) throw new NotFoundException();
     return product;
   }
@@ -39,14 +39,14 @@ export class ProductsService {
   async createProduct(createProductDto: CreateProductDto): Promise<Product> {
     const newProduct = this.productsRepository.create({
       ...createProductDto,
-      idName: stringHelper.generateIdName(createProductDto.name),
+      id: stringHelper.generateId(createProductDto.name),
     });
 
     return this.productsRepository.save(newProduct);
   }
 
-  async updateProduct(idName: string, updateProductDto: UpdateProductDto) {
-    const product = await this.getProduct(idName);
+  async updateProduct(id: string, updateProductDto: UpdateProductDto) {
+    const product = await this.getProduct(id);
     return this.productsRepository.save({ ...product, ...updateProductDto });
   }
 }
