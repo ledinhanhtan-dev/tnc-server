@@ -1,40 +1,46 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('products')
 export class Product {
-  @PrimaryColumn({ unique: true })
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  category_id: number;
+
+  @Column()
+  brand_id: number;
 
   @Column()
   name: string;
 
   @Column()
+  slug: string;
+
+  @Column()
   price: number;
 
   @Column()
-  priceOld: number;
+  price_old: number;
 
   @Column()
   thumbnail: string;
 
-  @Column('text', { array: true })
-  images: string[];
+  @Column()
+  images: string;
 
   @Column()
-  link: string;
+  short_desc: string;
 
   @Column()
-  ratingScore: number;
+  rating_score: number;
 
   @Column()
-  ratingCount: number;
+  rating_count: number;
 
   @Column()
   guarantee: number;
 
-  @Column('text', { array: true })
-  shortDescriptions: string[];
-
   @Column()
-  available: boolean;
+  in_stock: boolean;
 }
