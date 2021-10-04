@@ -1,10 +1,12 @@
 import { Product } from 'src/products/entities/product.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -18,6 +20,12 @@ export class Category {
   @Column()
   @Index({ unique: true })
   slug: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   // Relationships
 

@@ -1,10 +1,12 @@
 import { Product } from 'src/products/entities/product.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -21,6 +23,12 @@ export class Brand {
 
   @Column()
   image: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   // Relationships
 

@@ -28,12 +28,27 @@ export class ProductsService {
   async getHomeProducts(): Promise<HomeProducts> {
     const discountProducts = await this.productsRepository
       .createQueryBuilder('product')
-      .select()
+      .select(PRODUCT_CARD_PROPERTIES)
+      .where('product.priceOld > 0')
+      .orderBy('"createdAt"')
       .limit(10)
       .getMany();
 
-    // const products = await this.productsRepository.find();
-    return { discountProducts, newProducts: [], hotProducts: [] };
+    const newProducts = await this.productsRepository
+      .createQueryBuilder('product')
+      .select(PRODUCT_CARD_PROPERTIES)
+      .orderBy('"createdAt"')
+      .limit(10)
+      .getMany();
+
+    const hotProducts = await this.productsRepository
+      .createQueryBuilder('product')
+      .select(PRODUCT_CARD_PROPERTIES)
+      .orderBy('"createdAt"')
+      .limit(10)
+      .getMany();
+
+    return { discountProducts, newProducts, hotProducts };
   }
 
   async getProduct(slug: string): Promise<Product> {
