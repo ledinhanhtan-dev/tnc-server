@@ -1,46 +1,66 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Brand } from 'src/brands/entities/brand.entity';
+import { Category } from 'src/categories/entities/category.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-@Entity('products')
+@Entity()
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  category_id: number;
-
-  @Column()
-  brand_id: number;
-
-  @Column()
   name: string;
 
   @Column()
+  @Index({ unique: true })
   slug: string;
 
   @Column()
   price: number;
 
-  @Column()
-  price_old: number;
+  @Column({ nullable: true })
+  priceOld: number;
 
   @Column()
   thumbnail: string;
 
-  @Column()
-  images: string;
+  @Column({ type: 'simple-array' })
+  images: string[];
 
-  @Column()
-  short_desc: string;
+  @Column({ type: 'simple-array', default: [] })
+  shortDesc: string[];
 
-  @Column()
-  rating_score: number;
+  @Column({
+    type: 'simple-json',
+    nullable: true,
+    default: { score: 0, count: 0 },
+  })
+  rating: {
+    score: number;
+    count: number;
+  };
 
-  @Column()
-  rating_count: number;
-
-  @Column()
+  @Column({ default: 36 })
   guarantee: number;
 
   @Column()
-  in_stock: boolean;
+  inStock: boolean;
+
+  // Relationships
+
+  @ManyToOne(() => Category, category => category.products, {
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
+
+  @ManyToOne(() => Brand, brand => brand.products, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'brand_id' })
+  brand: Brand;
 }

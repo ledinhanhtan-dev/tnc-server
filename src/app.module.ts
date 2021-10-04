@@ -5,6 +5,8 @@ import { configValidationSchema } from './config/config.schema';
 import { ProductsModule } from './products/products.module';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
+import { BrandsModule } from './brands/brands.module';
+import { CategoriesModule } from './categories/categories.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,12 +25,15 @@ import { AuthModule } from './auth/auth.module';
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_DATABASE'),
           autoLoadEntities: true,
+          synchronize: true,
         };
       },
     }),
     CommonModule,
+    BrandsModule,
     ProductsModule,
     AuthModule,
+    CategoriesModule,
   ],
   providers: [],
   //
