@@ -1,60 +1,59 @@
-// import {
-//   ArrayMinSize,
-//   IsArray,
-//   IsBoolean,
-//   IsInt,
-//   IsNotEmpty,
-//   IsNumber,
-//   IsPositive,
-//   IsString,
-//   Max,
-//   Min,
-// } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsPositive,
+  IsString,
+  Min,
+} from 'class-validator';
 
-// export class CreateProductDto {
-//   @IsNotEmpty()
-//   @IsString()
-//   name: string;
+enum Brands {
+  ASUS = 'asus',
+}
+export class CreateProductDto {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 
-//   @IsPositive()
-//   price: number;
+  @IsPositive()
+  price: number;
 
-//   @IsNumber()
-//   @Min(0)
-//   priceOld: number;
+  @IsNumber()
+  @Min(0)
+  priceOld: number;
 
-//   @IsNotEmpty()
-//   @IsString()
-//   thumbnail: string;
+  @IsNotEmpty()
+  @IsString()
+  thumbnail: string;
 
-//   @IsArray()
-//   @ArrayMinSize(1)
-//   images: string[];
+  @IsArray()
+  @IsNotEmpty({ each: true })
+  images: string[];
 
-//   @IsNotEmpty()
-//   @IsString()
-//   link: string;
+  @IsArray()
+  @IsNotEmpty({ each: true })
+  shortDesc: string[];
 
-//   @IsNumber()
-//   @Min(0)
-//   @Max(5)
-//   ratingScore: number;
+  @IsObject()
+  rating: { score: number; count: number };
 
-//   @IsNumber()
-//   @Min(0)
-//   @IsInt()
-//   ratingCount: number;
+  @IsNotEmpty()
+  @IsInt()
+  @IsPositive()
+  guarantee: number;
 
-//   @IsNotEmpty()
-//   @IsNumber()
-//   @IsPositive()
-//   guarantee: number;
+  @IsNotEmpty()
+  @IsBoolean()
+  inStock: boolean = true;
 
-//   @IsNotEmpty()
-//   @IsArray()
-//   shortDescriptions: string[];
+  @IsNotEmpty()
+  @IsEnum(Brands)
+  brandSlug: string;
 
-//   @IsNotEmpty()
-//   @IsBoolean()
-//   available: boolean = true;
-// }
+  @IsNotEmpty()
+  categorySlug: string;
+}

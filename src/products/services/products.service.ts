@@ -1,14 +1,14 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { stringHelper } from 'src/helpers/stringHelper.helper';
-// import { CreateProductDto } from './dto/create-product.dto';
-import { HomeProducts } from '../interfaces/home-products';
+import { CreateProductDto } from '../dto/create-product.dto';
+import { HomeProducts } from '../interfaces';
 import { Product } from '../entities/product.entity';
-import { createQueryBuilder, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { PRODUCT_CARD_PROPERTIES } from '../constants';
 import { Brand } from 'src/brands/entities/brand.entity';
 import { Category } from 'src/categories/entities/category.entity';
-// import { UpdateProductDto } from './dto/update-product.dto';
+import { UpdateProductDto } from '../dto/update-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -78,45 +78,23 @@ export class ProductsService {
       .getMany();
   }
 
-  // async createProduct(createProductDto: CreateProductDto): Promise<Product> {
-  //   const product = this.productsRepository.create({
-  //     name: 'Card Màn Hình Asus Dual GeForce RTX3060 Ti V2 Edition (LHR)',
-  //     slug: 'card-man-hinh-asus-dual-geforce-rtx3060-ti-v2-edition-lhr',
-  //     price: 20900000,
-  //     priceOld: 21290000,
-  //     thumbnail:
-  //       'http://localhost:3000/image/product/vga/asus/card-man-hinh-asus-dual-geforce-rtx3060-ti-v2-edition-1-228x228.jpg',
-  //     images: [
-  //       'http://localhost:3000/image/product/vga/asus/card-man-hinh-asus-dual-geforce-rtx3060-ti-v2-edition-1-500x500.jpg',
-  //       'http://localhost:3000/image/product/vga/asus/card-man-hinh-asus-dual-geforce-rtx3060-ti-v2-edition-2-500x500.jpg',
-  //       'http://localhost:3000/image/product/vga/asus/card-man-hinh-asus-dual-geforce-rtx3060-ti-v2-edition-3-500x500.jpg',
-  //       'http://localhost:3000/image/product/vga/asus/card-man-hinh-asus-dual-geforce-rtx3060-ti-v2-edition-4-500x500.jpg',
-  //     ],
-  //     rating: { score: 4, count: 11 },
-  //     guarantee: 36,
-  //     shortDesc: [
-  //       'Dung lượng bộ nhớ: 8GB GDDR6',
-  //       'Stream Core: 4864',
-  //       'Chuẩn kết nối: PCI Express 4.0',
-  //       'Kết nối: 2 x HDMI2.1, 3 x DisplayPort™ 1.4a',
-  //       'Nguồn yêu cầu: 750W',
-  //     ],
-  //     inStock: true,
-  //     brand: await this.categoriesRepository.findOne(1),
-  //     category: await this.categoriesRepository.findOne(1),
-  //   });
+  async createProduct(createDto: CreateProductDto): Promise<Product> {
+    const { categorySlug, brandSlug, ...dto } = createDto;
 
-  //   await this.productsRepository.save(product);
+    const category = await this.categoriesRepository.findOne({
+      slug: categorySlug,
+    });
+    const brand = await this.brandsRepository.findOne({ slug: brandSlug });
 
-  //   return product;
+    const newProduct = this.productsRepository.create({
+      ...dto,
+      slug: stringHelper.generateSlug(dto.name),
+      category,
+      brand,
+    });
 
-  //   const newProduct = this.productsRepository.create({
-  //     ...createProductDto,
-  //     id: stringHelper.generateId(createProductDto.name),
-  //   });
-
-  //   return this.productsRepository.save(newProduct);
-  // }
+    return this.productsRepository.save(newProduct);
+  }
 
   // async updateProduct(id: string, updateProductDto: UpdateProductDto) {
   //   const product = await this.getProduct(id);
