@@ -1,8 +1,8 @@
-import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
 import { GetSessionId } from '../decorators/get-session-id.decorator';
-import { Cart } from '../entities/cart.entity';
+import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
 import { CalcTotalsInterceptor } from '../interceptors/calc-totals.interceptor';
 import { CartService } from '../services/cart.service';
+import { Cart } from '../entities/cart.entity';
 @UseInterceptors(CalcTotalsInterceptor)
 @Controller('cart')
 export class CartController {
