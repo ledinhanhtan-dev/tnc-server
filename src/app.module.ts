@@ -7,6 +7,7 @@ import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import { BrandsModule } from './brands/brands.module';
 import { CategoriesModule } from './categories/categories.module';
+import { CartModule } from './cart/cart.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -32,8 +33,9 @@ import { CategoriesModule } from './categories/categories.module';
     CommonModule,
     BrandsModule,
     ProductsModule,
-    AuthModule,
     CategoriesModule,
+    AuthModule,
+    CartModule,
   ],
   providers: [],
   //

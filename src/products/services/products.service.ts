@@ -1,14 +1,14 @@
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PRODUCT_CARD_PROPERTIES } from '../constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Category } from 'src/categories/entities/category.entity';
 import { stringHelper } from 'src/helpers/stringHelper.helper';
 import { CreateProductDto } from '../dto/create-product.dto';
-import { HomeProducts } from '../interfaces';
-import { Product } from '../entities/product.entity';
-import { Repository } from 'typeorm';
-import { PRODUCT_CARD_PROPERTIES } from '../constants';
-import { Brand } from 'src/brands/entities/brand.entity';
-import { Category } from 'src/categories/entities/category.entity';
 import { UpdateProductDto } from '../dto/update-product.dto';
+import { Brand } from 'src/brands/entities/brand.entity';
+import { Product } from '../entities/product.entity';
+import { HomeProducts } from '../interfaces';
 
 @Injectable()
 export class ProductsService {

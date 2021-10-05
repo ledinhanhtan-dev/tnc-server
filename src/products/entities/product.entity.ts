@@ -1,4 +1,5 @@
 import { Brand } from 'src/brands/entities/brand.entity';
+import { CartItem } from 'src/cart/entities/cart-item.entity';
 import { Category } from 'src/categories/entities/category.entity';
 import {
   Column,
@@ -6,7 +7,9 @@ import {
   Entity,
   Index,
   JoinColumn,
+  JoinTable,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -71,4 +74,8 @@ export class Product {
   @ManyToOne(() => Brand, brand => brand.products, { onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'brand_id' })
   brand: Brand;
+
+  @OneToMany(() => CartItem, cartItem => cartItem.id)
+  @JoinTable()
+  cartItems: CartItem[];
 }
