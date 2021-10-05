@@ -56,6 +56,7 @@ export class ProductsService {
       { slug },
       { relations: ['category', 'brand'] },
     );
+
     if (!product) throw new NotFoundException();
     return product;
   }
@@ -95,9 +96,4 @@ export class ProductsService {
 
     return this.productsRepository.save(newProduct);
   }
-
-  // async updateProduct(id: string, updateProductDto: UpdateProductDto) {
-  //   const product = await this.getProduct(id);
-  //   return this.productsRepository.save({ ...product, ...updateProductDto });
-  // }
 }

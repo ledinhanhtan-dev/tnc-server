@@ -1,4 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { CartItem } from './cart-item.entity';
 
 @Entity()
@@ -9,12 +18,12 @@ export class Cart {
   @Column()
   sessionId: string;
 
-  @Column()
-  totalPrice: number;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @Column()
-  totalQuantity: number;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-  @OneToMany(() => CartItem, cartItem => cartItem.id)
+  @OneToMany(() => CartItem, cartItem => cartItem.cart)
   cartItems: CartItem[];
 }
