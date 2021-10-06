@@ -31,8 +31,6 @@ export class CartController {
     @Param('productId') productId: string,
     @Body('quantity') quantity: number,
   ): Promise<Cart> {
-    console.log(quantity);
-
     return this.cartService.addToCart(sessionId, +productId, quantity);
   }
 
