@@ -2,8 +2,8 @@ import { Product } from 'src/products/entities/product.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
+  CreateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Cart } from './cart.entity';
@@ -15,6 +15,9 @@ export class CartItem {
 
   @Column()
   quantity: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   // FIX: cartIdId
   @ManyToOne(() => Cart, cart => cart.cartItems, {

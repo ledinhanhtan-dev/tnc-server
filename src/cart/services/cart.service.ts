@@ -33,22 +33,31 @@ export class CartService {
     const cartItems = await this.cartItemsRepository.find({
       where: { cart },
       relations: ['product'],
+      order: { createdAt: 'ASC' },
     });
 
     return { ...cart, cartItems };
   }
 
-  async addToCart(sessionId: string, productId: number): Promise<Cart> {
+  async addToCart(
+    sessionId: string,
+    productId: number,
+    inputQuantity: number,
+  ): Promise<Cart> {
     const cart = await this.cartsRepository.findOne({ sessionId });
     const product = await this.productsRepository.findOne(productId);
     const cartItem = await this.cartItemsRepository.findOne({ cart, product });
 
     if (!cartItem)
-      await this.cartItemsRepository.save({ cart, product, quantity: 1 });
+      await this.cartItemsRepository.save({
+        cart,
+        product,
+        quantity: inputQuantity,
+      });
     else {
       await this.cartItemsRepository.save({
         ...cartItem,
-        quantity: cartItem.quantity + 1,
+        quantity: cartItem.quantity + inputQuantity,
       });
     }
 

@@ -1,5 +1,12 @@
 import { GetSessionId } from '../decorators/get-session-id.decorator';
-import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CalcTotalsInterceptor } from '../interceptors/calc-totals.interceptor';
 import { CartService } from '../services/cart.service';
 import { Cart } from '../entities/cart.entity';
@@ -18,12 +25,15 @@ export class CartController {
     return this.cartService.getNewCart();
   }
 
-  @Get('/add/:productId')
+  @Post('/add/:productId')
   addToCart(
     @GetSessionId() sessionId: string,
     @Param('productId') productId: string,
+    @Body('quantity') quantity: number,
   ): Promise<Cart> {
-    return this.cartService.addToCart(sessionId, +productId);
+    console.log(quantity);
+
+    return this.cartService.addToCart(sessionId, +productId, quantity);
   }
 
   @Get('/plus/:itemId')
