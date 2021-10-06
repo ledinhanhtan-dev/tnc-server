@@ -13,8 +13,10 @@ export class CalcTotalsInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((cart: Cart) => {
         const { totalPrice, totalQuantity } = this.calcTotals(cart);
+        cart.totalQuantity = totalQuantity;
+        cart.totalPrice = totalPrice;
 
-        return { ...cart, totalPrice, totalQuantity };
+        return cart;
       }),
     );
   }
