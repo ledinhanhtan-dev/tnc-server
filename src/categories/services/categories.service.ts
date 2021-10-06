@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PRODUCT_CARD_PROPERTIES } from 'src/products/constants';
 import { Product } from 'src/products/entities/product.entity';
-import { Repository } from 'typeorm';
 import { Category } from '../entities/category.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CategoriesService {
@@ -14,13 +14,17 @@ export class CategoriesService {
     private readonly productsRepository: Repository<Product>,
   ) {}
 
-  async getCategories(slug: string): Promise<Category> {
+  async getCategories(
+    slug: string,
+    sort: string = 'price',
+    order: 'ASC' | 'DESC' = 'ASC',
+  ): Promise<Category> {
     const category = await this.categoriesRepository.findOne({ slug });
     const products = await this.productsRepository
       .createQueryBuilder('product')
       .select(PRODUCT_CARD_PROPERTIES)
       .where('product.category.id = :categoryId', { categoryId: category.id })
-      .orderBy('price')
+      .orderBy(`"${sort}"`, order)
       .getMany();
 
     category.count = products.length;

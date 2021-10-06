@@ -23,7 +23,7 @@ export class Category {
   image: string;
 
   @Column({ nullable: true, type: 'simple-json' })
-  description: { title: string; content: string };
+  description: { title: string; text: string };
 
   count: number;
 
