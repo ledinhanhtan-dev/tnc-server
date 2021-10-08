@@ -31,7 +31,7 @@ export class CategoryService {
       .where('product.category.id = :categoryId', { categoryId: category.id })
       .offset((currentPage - 1) * PAGE_SIZE)
       .limit(PAGE_SIZE)
-      .orderBy(`"${sort}"`, order)
+      .orderBy(`product."${sort}"`, order)
       .getManyAndCount();
 
     const [products, count] = result;
@@ -59,7 +59,7 @@ export class CategoryService {
       .andWhere('tag.id IN(:...tagIds)', { tagIds }) /////////////////// Filtered by tags
       .offset((currentPage - 1) * PAGE_SIZE)
       .limit(PAGE_SIZE)
-      .orderBy(`"${sort}"`, order)
+      .orderBy(`product."${sort}"`, order)
       .getManyAndCount();
 
     const [products, count] = result;
