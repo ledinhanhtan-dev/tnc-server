@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PRODUCT_CARD_PROPERTIES } from 'src/products/constants';
 import { Product } from 'src/products/entities/product.entity';
+import { PRODUCT_CARD_KEYS } from 'src/products/constants/product-card.constant';
+import { PAGE_SIZE } from '../constants/cat-pagination.constant';
+import { CategoryQueryDto } from '../dto/category-query.dto';
 import { Category } from '../entities/category.entity';
 import { Repository } from 'typeorm';
 
@@ -16,19 +18,21 @@ export class CategoriesService {
 
   async getCategories(
     slug: string,
-    sort: string = 'price',
-    order: 'ASC' | 'DESC' = 'ASC',
+    catQueryDto: CategoryQueryDto,
   ): Promise<Category> {
-    const category = await this.categoriesRepository.findOne({ slug });
-    const products = await this.productsRepository
-      .createQueryBuilder('product')
-      .select(PRODUCT_CARD_PROPERTIES)
-      .where('product.category.id = :categoryId', { categoryId: category.id })
-      .orderBy(`"${sort}"`, order)
-      .getMany();
+    const { sort, order, currentPage } = catQueryDto;
 
-    category.count = products.length;
-    category.products = products;
+    const category = await this.categoriesRepository.findOne({ slug });
+    const result = await this.productsRepository.findAndCount({
+      where: { category },
+      select: PRODUCT_CARD_KEYS,
+      skip: (currentPage - 1) * PAGE_SIZE,
+      order: { [sort]: order },
+      take: PAGE_SIZE,
+    });
+
+    category.products = result[0];
+    category.count = result[1];
 
     return category;
   }

@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PRODUCT_CARD_PROPERTIES } from '../constants';
+import { PRODUCT_CARD_PROPERTIES } from '../constants/product-card.constant';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Category } from 'src/categories/entities/category.entity';
 import { stringHelper } from 'src/helpers/stringHelper.helper';

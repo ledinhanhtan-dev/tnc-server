@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { Category } from '../entities/category.entity';
 import { CategoriesService } from '../services/categories.service';
+import { CategoryQueryDto } from '../dto/category-query.dto';
+import { Category } from '../entities/category.entity';
 
 @Controller('categories')
 export class CategoriesController {
@@ -9,10 +10,8 @@ export class CategoriesController {
   @Get(':slug')
   getCategories(
     @Param('slug') slug: string,
-    @Query('sort') sort: string,
-    @Query('order') order: 'ASC' | 'DESC',
+    @Query() catQueryDto: CategoryQueryDto,
   ): Promise<Category> {
-    if (sort && order) return this.catServices.getCategories(slug, sort, order);
-    else return this.catServices.getCategories(slug);
+    return this.catServices.getCategories(slug, catQueryDto);
   }
 }
