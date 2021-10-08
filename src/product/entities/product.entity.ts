@@ -1,6 +1,7 @@
 import { Brand } from 'src/brand/entities/brand.entity';
 import { CartItem } from 'src/cart/entities/cart-item.entity';
 import { Category } from 'src/category/entities/category.entity';
+import { Tag } from 'src/tag/entities/tag.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +9,7 @@ import {
   Index,
   JoinColumn,
   JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -78,4 +80,8 @@ export class Product {
   @OneToMany(() => CartItem, cartItem => cartItem.id)
   @JoinTable()
   cartItems: CartItem[];
+
+  @ManyToMany(() => Tag, tag => tag.products)
+  @JoinTable()
+  tags: Tag[];
 }

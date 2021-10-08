@@ -6,9 +6,10 @@ import { Category } from './entities/category.entity';
 import { ProductService } from 'src/product/services/product.service';
 import { Product } from 'src/product/entities/product.entity';
 import { Brand } from 'src/brand/entities/brand.entity';
+import { Tag } from 'src/tag/entities/tag.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Category, Product, Brand])],
+  imports: [TypeOrmModule.forFeature([Category, Product, Brand, Tag])],
   providers: [CategoryService, ProductService],
   controllers: [CategoryController],
 })

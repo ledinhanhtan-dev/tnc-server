@@ -8,7 +8,7 @@ enum OrderBy {
 export class CategoryQueryDto {
   @IsOptional()
   @IsString()
-  readonly sort: 'price' | 'name' | 'createdAt' = 'createdAt';
+  readonly sort: 'price' | 'name' | 'createdAt' = 'price';
 
   @IsOptional()
   @IsString()

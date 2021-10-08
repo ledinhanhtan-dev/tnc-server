@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { BrandsModule } from './brand/brand.module';
 import { CartModule } from './cart/cart.module';
 import { CategoryModule } from './category/category.module';
+import { TagModule } from './tag/tag.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -36,6 +37,7 @@ import { CategoryModule } from './category/category.module';
     CategoryModule,
     AuthModule,
     CartModule,
+    TagModule,
   ],
   providers: [],
   //
