@@ -1,11 +1,11 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { CategoriesService } from '../services/categories.service';
+import { CategoryService } from '../services/category.service';
 import { CategoryQueryDto } from '../dto/category-query.dto';
 import { Category } from '../entities/category.entity';
 
-@Controller('categories')
-export class CategoriesController {
-  constructor(private readonly catServices: CategoriesService) {}
+@Controller('category')
+export class CategoryController {
+  constructor(private readonly catServices: CategoryService) {}
 
   @Get(':slug')
   getCategories(

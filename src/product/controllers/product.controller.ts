@@ -2,37 +2,37 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 // import { CreateProductDto } from './dto/create-product.dto';
 // import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from '../entities/product.entity';
-import { ProductsService } from '../services/products.service';
+import { ProductService } from '../services/product.service';
 
-@Controller('products')
-export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+@Controller('product')
+export class ProductController {
+  constructor(private readonly productService: ProductService) {}
 
   @Get('')
   getProducts(): Promise<Product[]> {
-    return this.productsService.getProducts();
+    return this.productService.getProducts();
   }
 
   @Get('home')
   getHomeProducts() {
-    return this.productsService.getHomeProducts();
+    return this.productService.getHomeProducts();
   }
 
   @Get(':slug')
   getProduct(@Param('slug') slug: string): Promise<Product> {
-    return this.productsService.getProduct(slug);
+    return this.productService.getProduct(slug);
   }
 
   @Get(':categoryId/category')
   getProductByCategory(
     @Param('categoryId') categoryId: string,
   ): Promise<Product[]> {
-    return this.productsService.getProductByCategory(categoryId);
+    return this.productService.getProductByCategory(categoryId);
   }
 
   // @Post('create')
   // createProduct(@Body() createProductDto: CreateProductDto): Promise<Product> {
-  //   return this.productsService.createProduct(createProductDto);
+  //   return this.productService.createProduct(createProductDto);
   // }
 
   // @Patch(':id/edit')
@@ -40,6 +40,6 @@ export class ProductsController {
   //   @Param('id') id: string,
   //   @Body() updateDto: UpdateProductDto,
   // ): Promise<Product> {
-  //   return this.productsService.updateProduct(id, updateDto);
+  //   return this.productService.updateProduct(id, updateDto);
   // }
 }

@@ -4,13 +4,13 @@ import { Brand } from '../entities/brand.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class BrandsService {
+export class BrandService {
   constructor(
     @InjectRepository(Brand)
-    private readonly brandsRepository: Repository<Brand>,
+    private readonly brandRepository: Repository<Brand>,
   ) {}
 
   async getBrands(): Promise<Brand[]> {
-    return this.brandsRepository.find();
+    return this.brandRepository.find();
   }
 }

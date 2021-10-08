@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configValidationSchema } from './config/config.schema';
-import { ProductsModule } from './products/products.module';
+import { ProductModule } from './product/product.module';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
-import { BrandsModule } from './brands/brands.module';
-import { CategoriesModule } from './categories/categories.module';
+import { BrandsModule } from './brand/brand.module';
 import { CartModule } from './cart/cart.module';
+import { CategoryModule } from './category/category.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -32,8 +32,8 @@ import { CartModule } from './cart/cart.module';
     }),
     CommonModule,
     BrandsModule,
-    ProductsModule,
-    CategoriesModule,
+    ProductModule,
+    CategoryModule,
     AuthModule,
     CartModule,
   ],

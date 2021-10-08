@@ -1,6 +1,6 @@
-import { Brand } from 'src/brands/entities/brand.entity';
+import { Brand } from 'src/brand/entities/brand.entity';
 import { CartItem } from 'src/cart/entities/cart-item.entity';
-import { Category } from 'src/categories/entities/category.entity';
+import { Category } from 'src/category/entities/category.entity';
 import {
   Column,
   CreateDateColumn,

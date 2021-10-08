@@ -2,31 +2,31 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PRODUCT_CARD_PROPERTIES } from '../constants/product-card.constant';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Category } from 'src/categories/entities/category.entity';
+import { Category } from 'src/category/entities/category.entity';
 import { stringHelper } from 'src/helpers/stringHelper.helper';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
-import { Brand } from 'src/brands/entities/brand.entity';
+import { Brand } from 'src/brand/entities/brand.entity';
 import { Product } from '../entities/product.entity';
 import { HomeProducts } from '../interfaces';
 
 @Injectable()
-export class ProductsService {
+export class ProductService {
   constructor(
     @InjectRepository(Product)
-    private readonly productsRepository: Repository<Product>,
+    private readonly productRepository: Repository<Product>,
     @InjectRepository(Brand)
-    private readonly brandsRepository: Repository<Brand>,
+    private readonly brandRepository: Repository<Brand>,
     @InjectRepository(Category)
-    private readonly categoriesRepository: Repository<Category>,
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
   async getProducts(): Promise<Product[]> {
-    return this.productsRepository.find();
+    return this.productRepository.find();
   }
 
   async getHomeProducts(): Promise<HomeProducts> {
-    const discountProducts = await this.productsRepository
+    const discountProducts = await this.productRepository
       .createQueryBuilder('product')
       .select(PRODUCT_CARD_PROPERTIES)
       .where('product.priceOld > 0')
@@ -34,14 +34,14 @@ export class ProductsService {
       .limit(10)
       .getMany();
 
-    const newProducts = await this.productsRepository
+    const newProducts = await this.productRepository
       .createQueryBuilder('product')
       .select(PRODUCT_CARD_PROPERTIES)
       .orderBy('"createdAt"')
       .limit(10)
       .getMany();
 
-    const hotProducts = await this.productsRepository
+    const hotProducts = await this.productRepository
       .createQueryBuilder('product')
       .select(PRODUCT_CARD_PROPERTIES)
       .orderBy('"createdAt"')
@@ -52,7 +52,7 @@ export class ProductsService {
   }
 
   async getProduct(slug: string): Promise<Product> {
-    const product = await this.productsRepository.findOne(
+    const product = await this.productRepository.findOne(
       { slug },
       { relations: ['category', 'brand'] },
     );
@@ -62,7 +62,7 @@ export class ProductsService {
   }
 
   async getProductByCategory(categoryId: string): Promise<Product[]> {
-    return this.productsRepository
+    return this.productRepository
       .createQueryBuilder('product')
       .select()
       .where('product.category.id = :categoryId', { categoryId })
@@ -71,7 +71,7 @@ export class ProductsService {
   }
 
   async getProductsByBrand(brandId: string): Promise<Product[]> {
-    return this.productsRepository
+    return this.productRepository
       .createQueryBuilder('product')
       .select()
       .where('product.brand.id = :brandId', { brandId })
@@ -82,18 +82,18 @@ export class ProductsService {
   async createProduct(createDto: CreateProductDto): Promise<Product> {
     const { categorySlug, brandSlug, ...dto } = createDto;
 
-    const category = await this.categoriesRepository.findOne({
+    const category = await this.categoryRepository.findOne({
       slug: categorySlug,
     });
-    const brand = await this.brandsRepository.findOne({ slug: brandSlug });
+    const brand = await this.brandRepository.findOne({ slug: brandSlug });
 
-    const newProduct = this.productsRepository.create({
+    const newProduct = this.productRepository.create({
       ...dto,
       slug: stringHelper.generateSlug(dto.name),
       category,
       brand,
     });
 
-    return this.productsRepository.save(newProduct);
+    return this.productRepository.save(newProduct);
   }
 }

@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Product } from 'src/products/entities/product.entity';
+import { Product } from 'src/product/entities/product.entity';
 import { CartItem } from '../entities/cart-item.entity';
 import { Cart } from '../entities/cart.entity';
 
@@ -14,7 +14,7 @@ export class CartService {
     @InjectRepository(CartItem)
     private readonly cartItemsRepository: Repository<CartItem>,
     @InjectRepository(Product)
-    private readonly productsRepository: Repository<Product>,
+    private readonly productRepository: Repository<Product>,
   ) {}
 
   async getNewCart(): Promise<Cart> {
@@ -45,7 +45,7 @@ export class CartService {
     inputQuantity: number,
   ): Promise<Cart> {
     const cart = await this.cartsRepository.findOne({ sessionId });
-    const product = await this.productsRepository.findOne(productId);
+    const product = await this.productRepository.findOne(productId);
     const cartItem = await this.cartItemsRepository.findOne({ cart, product });
 
     if (!cartItem)
