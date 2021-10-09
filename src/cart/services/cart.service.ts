@@ -29,7 +29,7 @@ export class CartService {
   async getCart(sessionId: string): Promise<Cart> {
     const cart = await this.cartRepository
       .createQueryBuilder('cart')
-      .where('cart.sessionId = :sessionId', { sessionId })
+      .where('cart."sessionId" = :sessionId', { sessionId })
       .leftJoinAndSelect('cart.cartItems', 'cartItem')
       .leftJoinAndSelect('cartItem.product', 'product')
       .orderBy('cartItem.createdAt')
