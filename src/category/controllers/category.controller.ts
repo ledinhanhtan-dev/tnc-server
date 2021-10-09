@@ -8,6 +8,11 @@ import { Tag } from 'src/tag/entities/tag.entity';
 export class CategoryController {
   constructor(private readonly catServices: CategoryService) {}
 
+  @Get(':slug')
+  getCategoryInitial(@Param('slug') slug: string): Promise<Category> {
+    return this.catServices.getCategoryInitial(slug);
+  }
+
   @Post(':slug')
   getFilteredCategory(
     @Param('slug') slug: string,

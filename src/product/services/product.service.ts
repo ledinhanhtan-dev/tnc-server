@@ -65,7 +65,7 @@ export class ProductService {
     return this.productRepository
       .createQueryBuilder('product')
       .select()
-      .where('product.category.id = :categoryId', { categoryId })
+      .where('product.categoryId = :categoryId', { categoryId })
       .limit(10)
       .getMany();
   }
@@ -74,7 +74,7 @@ export class ProductService {
     return this.productRepository
       .createQueryBuilder('product')
       .select()
-      .where('product.brand.id = :brandId', { brandId })
+      .where('product.brandId = :brandId', { brandId })
       .limit(10)
       .getMany();
   }

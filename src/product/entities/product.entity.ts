@@ -67,14 +67,12 @@ export class Product {
 
   // Relationships
 
-  @ManyToOne(() => Category, category => category.products, {
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'category_id' })
+  @ManyToOne(() => Category, category => category.products)
+  @JoinColumn({ name: 'categoryId' })
   category: Category;
 
   @ManyToOne(() => Brand, brand => brand.products, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'brand_id' })
+  @JoinColumn({ name: 'brandId' })
   brand: Brand;
 
   @OneToMany(() => CartItem, cartItem => cartItem.id)

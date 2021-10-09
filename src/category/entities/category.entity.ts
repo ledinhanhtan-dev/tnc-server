@@ -1,8 +1,10 @@
+import { Filter } from 'src/filter/entities/filter.entity';
 import { Product } from 'src/product/entities/product.entity';
 import {
   Column,
   Entity,
   Index,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -31,4 +33,7 @@ export class Category {
 
   @OneToMany(() => Product, product => product.category, { cascade: true })
   products: Product[];
+
+  @OneToMany(() => Filter, filter => filter.category)
+  filters: Filter[];
 }
