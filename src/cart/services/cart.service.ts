@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from 'src/product/entities/product.entity';
 import { CartItem } from '../entities/cart-item.entity';
 import { Cart } from '../entities/cart.entity';
@@ -35,8 +35,9 @@ export class CartService {
       .orderBy('cartItem.createdAt')
       .getOne();
 
-    if (cart) return cart;
-    else return this.getNewCart();
+    if (!cart) throw new NotFoundException();
+
+    return cart;
   }
 
   async addToCart(
