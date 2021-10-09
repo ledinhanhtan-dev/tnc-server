@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/product/entities/product.entity';
 import { PRODUCT_CARD_PROPERTIES } from 'src/product/constants/product-card.constant';
-import { FilterService } from 'src/filter/services/filter.service';
 import { CategoryQueryDto } from '../dto/category-query.dto';
 import { PAGE_SIZE } from '../constants/category.constant';
 import { Category } from '../entities/category.entity';
@@ -12,7 +11,6 @@ import { Tag } from 'src/tag/entities/tag.entity';
 @Injectable()
 export class CategoryService {
   constructor(
-    private readonly filterService: FilterService,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
     @InjectRepository(Product)
@@ -49,7 +47,6 @@ export class CategoryService {
     const { sort, order, currentPage } = catQueryDto;
 
     const category = await this.categoryRepository.findOne({ slug });
-    const filters = await this.filterService.getFiltersByCatId(category.id);
     const result = await this.productRepository
       .createQueryBuilder('product')
       .select(PRODUCT_CARD_PROPERTIES)
@@ -59,7 +56,6 @@ export class CategoryService {
       .orderBy(`product."${sort}"`, order)
       .getManyAndCount();
 
-    category.filters = filters;
     const [products, count] = result;
     category.products = products;
     category.count = count;

@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configValidationSchema } from './config/config.schema';
-import { ProductModule } from './product/product.module';
-import { CommonModule } from './common/common.module';
-import { AuthModule } from './auth/auth.module';
-import { BrandsModule } from './brand/brand.module';
-import { CartModule } from './cart/cart.module';
 import { CategoryModule } from './category/category.module';
-import { TagModule } from './tag/tag.module';
+import { ProductModule } from './product/product.module';
 import { FilterModule } from './filter/filter.module';
+import { CommonModule } from './common/common.module';
+import { BrandsModule } from './brand/brand.module';
+import { AuthModule } from './auth/auth.module';
+import { CartModule } from './cart/cart.module';
+import { TagModule } from './tag/tag.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -42,6 +42,5 @@ import { FilterModule } from './filter/filter.module';
     FilterModule,
   ],
   providers: [],
-  //
 })
 export class AppModule {}

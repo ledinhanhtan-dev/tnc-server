@@ -1,4 +1,4 @@
-import { IsNumberString, IsOptional, IsString, Min } from 'class-validator';
+import { IsOptional, IsString, Min } from 'class-validator';
 
 enum OrderBy {
   ASC = 'ASC',
