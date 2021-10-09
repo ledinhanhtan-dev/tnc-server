@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from 'src/product/entities/product.entity';
 import { CartItem } from '../entities/cart-item.entity';
 import { Cart } from '../entities/cart.entity';
@@ -10,33 +10,33 @@ import { Cart } from '../entities/cart.entity';
 export class CartService {
   constructor(
     @InjectRepository(Cart)
-    private readonly cartsRepository: Repository<Cart>,
+    private readonly cartRepository: Repository<Cart>,
     @InjectRepository(CartItem)
-    private readonly cartItemsRepository: Repository<CartItem>,
+    private readonly cartItemRepository: Repository<CartItem>,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
   ) {}
 
   async getNewCart(): Promise<Cart> {
-    const newCart = this.cartsRepository.create({
+    const newCart = this.cartRepository.create({
       sessionId: uuid(),
       cartItems: [],
     });
 
-    return this.cartsRepository.save(newCart);
+    return this.cartRepository.save(newCart);
   }
 
   async getCart(sessionId: string): Promise<Cart> {
-    const cart = await this.cartsRepository.findOne({ sessionId });
-    if (!cart) throw new NotFoundException();
+    const cart = await this.cartRepository
+      .createQueryBuilder('cart')
+      .where('cart.sessionId = :sessionId', { sessionId })
+      .leftJoinAndSelect('cart.cartItems', 'cartItem')
+      .leftJoinAndSelect('cartItem.product', 'product')
+      .orderBy('cartItem.createdAt')
+      .getOne();
 
-    const cartItems = await this.cartItemsRepository.find({
-      where: { cart },
-      relations: ['product'],
-      order: { createdAt: 'ASC' },
-    });
-
-    return { ...cart, cartItems };
+    if (cart) return cart;
+    else return this.getNewCart();
   }
 
   async addToCart(
@@ -44,29 +44,32 @@ export class CartService {
     productId: number,
     inputQuantity: number,
   ): Promise<Cart> {
-    const cart = await this.cartsRepository.findOne({ sessionId });
-    const product = await this.productRepository.findOne(productId);
-    const cartItem = await this.cartItemsRepository.findOne({ cart, product });
+    const cart = await this.getCart(sessionId);
 
-    if (!cartItem)
-      await this.cartItemsRepository.save({
+    const index = cart.cartItems.findIndex(
+      item => item.product.id === productId,
+    );
+
+    if (index === -1) {
+      const product = await this.productRepository.findOne(productId);
+      const item = this.cartItemRepository.create({
         cart,
         product,
         quantity: inputQuantity,
       });
-    else {
-      await this.cartItemsRepository.save({
-        ...cartItem,
-        quantity: cartItem.quantity + inputQuantity,
-      });
+
+      const newItem = await this.cartItemRepository.save(item);
+
+      cart.cartItems.push(newItem);
+    } else {
+      const item = cart.cartItems[index];
+      item.quantity = item.quantity + inputQuantity;
+      const updatedItem = await this.cartItemRepository.save(item);
+
+      cart.cartItems[index] = updatedItem;
     }
 
-    const cartItems = await this.cartItemsRepository.find({
-      where: { cart },
-      relations: ['product'],
-    });
-
-    return this.cartsRepository.save({ ...cart, cartItems });
+    return cart;
   }
 
   async editQuantity(
@@ -74,26 +77,24 @@ export class CartService {
     cartItemId: number,
     expression: 'plus' | 'minus',
   ): Promise<Cart> {
-    const cartItem = await this.cartItemsRepository.findOne(cartItemId);
-    const updatedQuantity =
-      expression === 'plus' ? cartItem.quantity + 1 : cartItem.quantity - 1;
+    const item = await this.cartItemRepository.findOne(cartItemId);
+    if (expression === 'plus') item.quantity += 1;
+    else item.quantity -= 1;
 
-    await this.cartItemsRepository.update(
-      { id: cartItemId },
-      { quantity: updatedQuantity },
-    );
+    await this.cartItemRepository.save(item);
 
     return this.getCart(sessionId);
   }
 
   async removeFromCart(sessionId: string, cartItemId: number): Promise<Cart> {
-    await this.cartItemsRepository.delete(cartItemId);
+    await this.cartItemRepository.delete(cartItemId);
     return this.getCart(sessionId);
   }
 
   async deleteCart(sessionId: string): Promise<Cart> {
-    const cart = await this.cartsRepository.findOne({ sessionId });
-    this.cartItemsRepository.delete({ cart });
+    const cart = await this.cartRepository.findOne({ sessionId });
+    this.cartItemRepository.delete({ cart });
+
     return { ...cart, cartItems: [] };
   }
 }

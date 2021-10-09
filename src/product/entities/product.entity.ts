@@ -75,7 +75,7 @@ export class Product {
   @JoinColumn({ name: 'brandId' })
   brand: Brand;
 
-  @OneToMany(() => CartItem, cartItem => cartItem.id)
+  @OneToMany(() => CartItem, cartItem => cartItem.product)
   @JoinTable()
   cartItems: CartItem[];
 
