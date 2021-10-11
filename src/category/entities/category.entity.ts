@@ -1,5 +1,6 @@
 import { Filter } from 'src/filter/entities/filter.entity';
 import { Product } from 'src/product/entities/product.entity';
+import { Store } from 'src/store/entities/store.entity';
 import {
   Column,
   Entity,
@@ -36,4 +37,7 @@ export class Category {
 
   @OneToMany(() => Filter, filter => filter.category)
   filters: Filter[];
+
+  @ManyToMany(() => Store, store => store.categories)
+  stores: Store[];
 }
