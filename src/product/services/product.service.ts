@@ -30,21 +30,22 @@ export class ProductService {
       .createQueryBuilder('product')
       .select(PRODUCT_CARD_PROPERTIES)
       .where('product.priceOld > 0')
-      .orderBy('"createdAt"')
+      .orderBy('"createdAt"', 'DESC')
       .limit(10)
       .getMany();
 
     const newProducts = await this.productRepository
       .createQueryBuilder('product')
       .select(PRODUCT_CARD_PROPERTIES)
-      .orderBy('"createdAt"')
+      .orderBy('"createdAt"', 'DESC')
       .limit(10)
       .getMany();
 
     const hotProducts = await this.productRepository
       .createQueryBuilder('product')
       .select(PRODUCT_CARD_PROPERTIES)
-      .orderBy('"createdAt"')
+      .where('product.priceOld > 0')
+      .orderBy('price', 'ASC')
       .limit(10)
       .getMany();
 
