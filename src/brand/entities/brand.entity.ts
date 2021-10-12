@@ -21,7 +21,7 @@ export class Brand {
   @Index({ unique: true })
   slug: string;
 
-  @Column()
+  @Column({ nullable: true })
   image: string;
 
   @CreateDateColumn()

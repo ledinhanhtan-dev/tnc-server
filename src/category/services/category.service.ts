@@ -23,6 +23,7 @@ export class CategoryService {
       .where('category.slug = :slug', { slug })
       .leftJoinAndSelect('category.filters', 'filter')
       .leftJoinAndSelect('filter.tags', 'tag')
+      .orderBy('tag.id')
       .getOne();
 
     const result = await this.productRepository
